@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types= 1);
+
 $email     = $_POST['email'] ?? '';
 $kommentar = $_POST['kommentar'] ?? '';
 
