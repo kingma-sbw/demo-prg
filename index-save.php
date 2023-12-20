@@ -2,7 +2,7 @@
 $email     = $_POST['email'] ?? '';
 $kommentar = $_POST['kommentar'] ?? '';
 
-if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
   /* db verbindung */
   $server = 'localhost';
   $dbname = 'm307_formdb';
@@ -13,19 +13,22 @@ if( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
     "mysql:dbname=$dbname;host=$server",
     $dbuser,
     $dbpass,
+    [ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ]
   );
 
   /* sql befehl vorbereiten */
-  $sql =
-    "INSERT INTO `kommentare` (`id`, `email`, `kommentar`)
+  $sql = "INSERT INTO `kommentare` ) id,
+      email,
+      kommentar
+    )
     VALUES (NULL, ?, ?);";
 
   $stmt = $db->prepare( $sql );
   /* sql befehl ausführen */
-  $resultat = $stmt->execute(
-    [ $email,
-      $kommentar
-    ] );
+  $resultat = $stmt->execute( [ 
+    $email,
+    $kommentar
+  ] );
   $id       = $db->lastInsertId();
   /* resultat ausgeben */
   if( $resultat ) {
